@@ -1,65 +1,74 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useState } from 'react'
+import css from '../styles/Home.module.css'
+import Image from 'next/image'
 
-export default function Home() {
+
+
+
+function PlanetList() {
+  const planetUrl ='https://swapi.dev/api/planets/';
+  const [planets, setPlanets] = useState([]);
+
+  async function getPlanets(){
+    const res= await fetch (planetUrl);
+    const data = await res.json();
+  
+    const { name, diameter, rotation_period, orbital_period, gravity, population, climate } = data
+    setPlanets(data.results);
+
+    
+
+  }
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Create Next App</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+    <div className={css.container}>
+     
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+      
+      
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+<div className={css.imageholder}>
+<h1>Welcome to the -INCREDIBLE- SWAPI Planet-list!</h1>
+      
+<Image
+        src="/planets.png"
+        alt="Picture of the author"
+        width={300}
+        height={300}
+      />
+      </div>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+      <button className={css.button} onClick={getPlanets} type="button">
+        CLICK ME!
+      </button>
 
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
+      
 
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      {planets.length ? (
+        <ul className={css.cardgrid}>
+      
+          {planets.map(({name, diameter, rotation_period, orbital_period, gravity, population, climate}) => (
+            
+            <div className={css.card}>
+            <li className={css.planetlist}>
+              <h2>Planet: {name}</h2>
+               <p>Diameter: {diameter} </p>
+                <p>Rotation period: {rotation_period}</p>
+                <p>Orbital period: {orbital_period} </p>
+                <p>Gravity: {gravity}</p>
+                <p>Polpulation: {population} </p>
+                <p>Climate: {climate}</p>
+                </li>
+                </div>
+                
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+          ))}
+        </ul>
+      ): <></>}
     </div>
-  )
-}
+  );}
+
+  export default PlanetList;
+
+
